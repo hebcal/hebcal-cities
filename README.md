@@ -8,6 +8,7 @@ $ npm install @hebcal/cities
 
 ## Synopsis
 ```javascript
+import {Location} from '@hebcal/core';
 import {cities} from '@hebcal/cities';
 
 cities.init();
