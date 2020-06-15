@@ -1,7 +1,7 @@
 import test from 'ava';
-import cities from './cities';
+import {cities} from './cities';
 
-test.before(t => {
+test.before(() => {
   cities.init();
 });
 
