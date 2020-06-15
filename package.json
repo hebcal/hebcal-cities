@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "Hebcal city database for candle-lighting times",
   "main": "dist/index.js",
+  "typings": "cities.d.ts",
+  "files": [
+    "dist",
+    "cities.d.ts"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hebcal/hebcal-cities.git"
