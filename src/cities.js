@@ -1,17 +1,5 @@
 import geoObject from './geo.json';
-
-/**
- * A City result
- * @typedef {Object} CityResult
- * @property {string} name Short city name
- * @property {number} latitude
- * @property {number} longitude
- * @property {string} tzid Timezone Identifier (for tzdata/Olson tzdb)
- * @property {string} cc ISO 3166 two-letter country code
- * @property {string} cityName longer city name with US State or country code
- * @property {string} [state] U.S. State name (only if cc='US')
- * @property {number} [geoid] optional numerical geoid
- */
+import {Location} from '@hebcal/core';
 
 /**
  * Interface to lookup cities
@@ -23,85 +11,63 @@ export const cities = {
   /**
    * Looks up a city
    * @param {string} str city name (such as "San Francisco" or "Jerusalem")
-   * @return {CityResult}
+   * @return {Location}
    */
-  getCity(str) {
+  lookup(str) {
     return this.cities.get(str.toLowerCase());
   },
 
   /**
-   * Parses `geo.json`; must be called before `getCity()`
+   * Must be called before `lookup()`
    */
   init() {
-    console.debug(`Parsing ${geoObject.cities.length} cities`);
-    this.cities = this.loadCities(geoObject.cities);
+    const locations = geoObject.cities.map((f) => {
+      const cityName = f[0];
+      const country = f[1];
+      const admin1 = f[2];
+      const latitude = +f[3];
+      const longitude = +f[4];
+      const tzid = f[5];
+      const geoid = f[6] ? +f[6] : undefined;
+      const city = new Location(latitude, longitude, country == 'IL',
+          tzid, cityName, country, geoid);
+      if (country == 'US') city.state = admin1;
+      return city;
+    });
+    this.cities = this.loadCities(locations);
     this.initCityAliases();
   },
 
-  loadCities(allCities) {
+  /**
+   * @param {Location[]} locations
+   * @return {Map}
+   */
+  loadCities(locations) {
     const cities = new Map();
-    const cityObjs = allCities.map(this.parseCityString, this);
-    for (const city of cityObjs) {
-      const cityLc = city.name.toLowerCase();
-      let aliasLc;
-      if (city.cc == 'US') {
-        const stateLc = geoObject.stateNames[city.state].toLowerCase();
-        aliasLc = `${cityLc} ${stateLc}`;
-      } else if (city.country) {
-        const countryLc = city.country.toLowerCase();
-        aliasLc = `${cityLc} ${countryLc}`;
+    for (const city of locations) {
+      const cityLc = city.getName().toLowerCase();
+      cities.set(cityLc, city);
+      const shortName = cityLc.substring(0, cityLc.indexOf(','));
+      if (!cities.has(shortName)) {
+        cities.set(shortName, city);
       }
-      if (!cities.has(cityLc)) {
-        cities.set(cityLc, city);
-      }
-      cities.set(aliasLc, city);
     }
-    // this is silly, but alias the first occurrence of each country and US state
-    for (const city of cityObjs) {
-      if (city.cc == 'US') {
+    // this is silly, but alias the first occurrence of each country
+    for (const city of locations) {
+      const cc = city.getCountryCode();
+      if (cc == 'US') {
         const stateLc = geoObject.stateNames[city.state].toLowerCase();
         if (!cities.has(stateLc)) {
           cities.set(stateLc, city);
         }
       } else {
-        const countryLc = city.country.toLowerCase();
+        const countryLc = geoObject.countryNames[cc].toLowerCase();
         if (!cities.has(countryLc)) {
           cities.set(countryLc, city);
         }
       }
     }
     return cities;
-  },
-
-  parseCityString(f) {
-    const cityName = f[0];
-    const country = f[1];
-    const admin1 = f[2];
-    const latitude = +f[3];
-    const longitude = +f[4];
-    const tzid = f[5];
-    const geoid = f[6];
-
-    const city = {
-      name: cityName,
-      cc: country,
-      latitude,
-      longitude,
-      tzid,
-    };
-
-    if (geoid) {
-      city.geoid = +geoid;
-    }
-    if (country == 'US') {
-      city.state = admin1;
-      city.cityName = `${cityName}, ${admin1}`;
-    } else {
-      const countryName = geoObject.countryNames[country];
-      city.country = countryName;
-      city.cityName = `${cityName}, ${countryName}`;
-    }
-    return city;
   },
 
   initCityAliases() {

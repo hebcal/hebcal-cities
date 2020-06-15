@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/hebcal/hebcal-cities#readme",
   "dependencies": {
-    "@hebcal/core": "^1.0.17"
+    "@hebcal/core": "^1.1.0"
   },
   "scripts": {
     "build": "rollup -c",
