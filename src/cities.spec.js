@@ -1,57 +1,35 @@
 import test from 'ava';
-import {cities} from './cities';
-
-test.before(() => {
-  cities.init();
-});
+import {Location} from '@hebcal/core';
+import './cities';
 
 test('lookup', (t) => {
-  let city = cities.lookup('Tel Aviv');
-  t.is(city.latitude, 32.08088);
-  t.is(city.longitude, 34.78057);
+  let city = Location.lookup('Rishon LeZiyyon');
+  t.is(city.latitude, 31.97102);
+  t.is(city.longitude, 34.78939);
   t.is(city.tzid, 'Asia/Jerusalem');
   t.is(city.cc, 'IL');
 
-  city = cities.lookup('Sao Paulo');
-  t.is(city.latitude, -23.5475);
-  t.is(city.longitude, -46.63611);
-  t.is(city.tzid, 'America/Sao_Paulo');
-  t.is(city.cc, 'BR');
-
-  city = cities.lookup('London');
-  t.is(city.latitude, 51.50853);
-  t.is(city.longitude, -0.12574);
-  t.is(city.tzid, 'Europe/London');
-  t.is(city.cc, 'GB');
-
-  city = cities.lookup('Providence');
-  t.is(city.latitude, 41.82399);
-  t.is(city.longitude, -71.41283);
-  t.is(city.tzid, 'America/New_York');
+  city = Location.lookup('El Paso');
+  t.is(city.latitude, 31.75872);
+  t.is(city.longitude, -106.48693);
+  t.is(city.tzid, 'America/Denver');
   t.is(city.cc, 'US');
 
-  city = cities.lookup('Melbourne');
-  t.is(city.latitude, -37.814);
-  t.is(city.longitude, 144.96332);
-  t.is(city.tzid, 'Australia/Melbourne');
-  t.is(city.cc, 'AU');
+  city = Location.lookup('Zurich');
+  t.is(city.latitude, 47.36667);
+  t.is(city.longitude, 8.55);
+  t.is(city.tzid, 'Europe/Zurich');
+  t.is(city.cc, 'CH');
+
+  city = Location.lookup('Dublin');
+  t.is(city.latitude, 53.33306);
+  t.is(city.longitude, -6.24889);
+  t.is(city.tzid, 'Europe/Dublin');
+  t.is(city.cc, 'IE');
 });
 
-test('classic-cities', (t) => {
+test('alias-cc-cityName', (t) => {
   const classic = [
-    'Ashdod', 'Atlanta', 'Austin', 'Baghdad', 'Beer Sheva',
-    'Berlin', 'Baltimore', 'Bogota', 'Boston', 'Budapest',
-    'Buenos Aires', 'Buffalo', 'Chicago', 'Cincinnati', 'Cleveland',
-    'Dallas', 'Denver', 'Detroit', 'Eilat', 'Gibraltar', 'Haifa',
-    'Hawaii', 'Helsinki', 'Houston', 'Jerusalem', 'Johannesburg',
-    'Kiev', 'La Paz', 'Livingston', 'Las Vegas', 'London', 'Los Angeles',
-    'Marseilles', 'Miami', 'Minneapolis', 'Melbourne', 'Mexico City',
-    'Montreal', 'Moscow', 'New York', 'Omaha', 'Ottawa', 'Panama City',
-    'Paris', 'Pawtucket', 'Petach Tikvah', 'Philadelphia', 'Phoenix',
-    'Pittsburgh', 'Providence', 'Portland', 'Saint Louis', 'Saint Petersburg',
-    'San Diego', 'San Francisco', 'Sao Paulo', 'Seattle', 'Sydney',
-    'Tel Aviv', 'Tiberias', 'Toronto', 'Vancouver', 'White Plains',
-    'Washington DC', 'Worcester',
     'IL-Ashdod', 'US-Atlanta-GA', 'US-Austin-TX', 'IQ-Baghdad', 'IL-Beer Sheva',
     'DE-Berlin', 'US-Baltimore-MD', 'CO-Bogota', 'US-Boston-MA', 'AR-Buenos Aires',
     'US-Buffalo-NY', 'US-Chicago-IL', 'US-Cincinnati-OH', 'US-Cleveland-OH',
@@ -66,33 +44,33 @@ test('classic-cities', (t) => {
     'US-White Plains-NY', 'US-Washington-DC', 'IL-Bnei Brak',
   ];
   for (const s of classic) {
-    const city = cities.lookup(s);
+    const city = Location.lookup(s);
     t.is(typeof city, 'object', s);
   }
 });
 
 test('alias-cc', (t) => {
-  t.is(cities.lookup('France').getName(), 'Paris');
-  t.is(cities.lookup('Russia').getName(), 'Moscow');
-  t.is(cities.lookup('United Kingdom').getName(), 'London');
-  t.is(cities.lookup('Brazil').getName(), 'Sao Paulo');
-  t.is(cities.lookup('Mexico').getName(), 'Mexico City');
-  t.is(cities.lookup('Argentina').getName(), 'Buenos Aires');
-  t.is(cities.lookup('Greece').getName(), 'Athens');
+  t.is(Location.lookup('France').getName(), 'Paris');
+  t.is(Location.lookup('Russia').getName(), 'Moscow');
+  t.is(Location.lookup('United Kingdom').getName(), 'London');
+  t.is(Location.lookup('Brazil').getName(), 'Sao Paulo');
+  t.is(Location.lookup('Mexico').getName(), 'Mexico City');
+  t.is(Location.lookup('Argentina').getName(), 'Buenos Aires');
+  t.is(Location.lookup('Greece').getName(), 'Athens');
 });
 
 test('alias-city', (t) => {
-  t.is(cities.lookup('NYC').getName(), 'New York');
-  t.is(cities.lookup('Vegas').getName(), 'Las Vegas');
-  t.is(cities.lookup('Scotland').getName(), 'Glasgow');
+  t.is(Location.lookup('NYC').getName(), 'New York');
+  t.is(Location.lookup('Vegas').getName(), 'Las Vegas');
+  t.is(Location.lookup('Scotland').getName(), 'Glasgow');
 });
 
 test('alias-us-state', (t) => {
-  t.is(cities.lookup('California').getName(), 'Los Angeles');
-  t.is(cities.lookup('Massachusetts').getName(), 'Boston');
+  t.is(Location.lookup('California').getName(), 'Los Angeles');
+  t.is(Location.lookup('Massachusetts').getName(), 'Boston');
 });
 
 test('notfound', (t) => {
-  const city = cities.lookup('**does not exist**');
+  const city = Location.lookup('**does not exist**');
   t.is(city, undefined);
 });
