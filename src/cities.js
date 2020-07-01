@@ -1,5 +1,5 @@
 import geoObject from './geo.json';
-import {Location, hebcal} from '@hebcal/core';
+import {Location} from '@hebcal/core';
 
 /**
  * @param {Object[]} raw
@@ -147,5 +147,5 @@ const locations = parseGeoObject(geoObject.cities);
 const cityMap = loadCities(locations);
 initCityAliases(cityMap);
 for (const [cityName, location] of cityMap.entries()) {
-  hebcal.registerLocation(cityName, location);
+  Location.addLocation(cityName, location);
 }
