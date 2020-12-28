@@ -1,8 +1,10 @@
 {
   "name": "@hebcal/cities",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Hebcal city database for candle-lighting times",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "browser": "dist/bundle.js",
   "typings": "cities.d.ts",
   "files": [
     "dist",
@@ -19,7 +21,7 @@
   },
   "homepage": "https://github.com/hebcal/hebcal-cities#readme",
   "dependencies": {
-    "@hebcal/core": "^2.2.3"
+    "@hebcal/core": "^3.0.0"
   },
   "scripts": {
     "build": "rollup -c",
@@ -45,18 +47,18 @@
   },
   "devDependencies": {
     "@ava/babel": "^1.0.1",
-    "@babel/core": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
-    "@babel/register": "^7.10.5",
-    "@rollup/plugin-babel": "^5.1.0",
-    "@rollup/plugin-commonjs": "^14.0.0",
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/register": "^7.12.10",
+    "@rollup/plugin-babel": "^5.2.2",
+    "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^8.4.0",
-    "ava": "^3.10.1",
-    "core-js": "^3.6.5",
-    "eslint": "^7.5.0",
+    "@rollup/plugin-node-resolve": "^11.0.1",
+    "ava": "^3.14.0",
+    "core-js": "^3.8.1",
+    "eslint": "^7.16.0",
     "eslint-config-google": "^0.14.0",
-    "rollup": "^2.23.0",
+    "rollup": "^2.35.1",
     "rollup-plugin-terser": "^6.1.0"
   }
 }
