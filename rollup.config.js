@@ -5,13 +5,15 @@ import json from '@rollup/plugin-json';
 import pkg from './package.json';
 import {terser} from 'rollup-plugin-terser';
 
+const banner = '/*! ' + pkg.name + ' v' + pkg.version + ' */';
+
 export default [
   {
     input: 'src/cities.js',
-    output: {
-      file: pkg.main, format: 'cjs', name: pkg.name,
-      banner: '/*! ' + pkg.name + ' v' + pkg.version + ' */',
-    },
+    output: [
+      {file: pkg.main, format: 'cjs', name: pkg.name, banner},
+      {file: pkg.module, format: 'es', name: pkg.name, banner},
+    ],
     plugins: [
       json({compact: true}),
       babel({
@@ -27,46 +29,20 @@ export default [
         exclude: ['node_modules/**'],
       }),
       nodeResolve(),
-      commonjs(),
     ],
     external: ['@hebcal/core'],
-  },
-  {
-    input: 'src/cities.js',
-    output: {
-      file: pkg.module, format: 'es', name: pkg.name,
-      banner: '/*! ' + pkg.name + ' v' + pkg.version + ' */',
-    },
-    external: ['@hebcal/core'],
-    plugins: [
-      json({compact: true}),
-      babel({
-        babelHelpers: 'bundled',
-        presets: [
-          ['@babel/preset-env', {
-            modules: false,
-            targets: {
-              node: '10.21.0',
-            },
-          }],
-        ],
-        exclude: ['node_modules/**'],
-      }),
-      nodeResolve(),
-      commonjs(),
-    ],
   },
   {
     input: 'src/cities.js',
     output: [
       {
-        file: pkg.browser,
+        file: 'dist/bundle.js',
         format: 'iife',
         globals: {
           '@hebcal/core': 'hebcal',
         },
         indent: false,
-        banner: '/*! ' + pkg.name + ' v' + pkg.version + ' */',
+        banner,
       },
       {
         file: 'dist/bundle.min.js',
@@ -75,7 +51,7 @@ export default [
           '@hebcal/core': 'hebcal',
         },
         plugins: [terser()],
-        banner: '/*! ' + pkg.name + ' v' + pkg.version + ' */',
+        banner,
       },
     ],
     plugins: [
