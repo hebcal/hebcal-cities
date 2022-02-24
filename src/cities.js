@@ -60,7 +60,7 @@ function initCityAliases(cities) {
   const aliasMap = {
     // geo.json name: [ alias1, alias2, alias3 ...]
     'new york': ['nyc', 'n y c', 'new york city', 'new york new york'],
-    'beer sheva': ['beersheba'],
+    'beer sheva': ['beersheba', 'beer sheba'],
     'the bronx': ['bronx', 'bronx new york'],
     'los angeles': ['la', 'l a'],
     'washington': ['dc', 'd c', 'washington dc', 'washington d c'],
@@ -72,7 +72,7 @@ function initCityAliases(cities) {
     'las vegas': ['vegas'],
     'Marseille': ['Marseilles'],
     'Panama': ['Panama City'],
-    'Petah Tiqwa': ['Petach Tikvah', 'Petach Tikva', 'Petah Tikvah'],
+    'Petah Tiqwa': ['Petach Tikvah', 'Petach Tikva', 'Petah Tikvah', 'Petah Tikva'],
     'Bene Beraq': ['Bnei Brak'],
   };
   const ccCityMap = {
@@ -133,13 +133,24 @@ function initCityAliases(cities) {
     'Bene Beraq': 'IL-Bnei Brak',
   };
   for (const [city, aliases] of Object.entries(aliasMap)) {
-    const c = cities.get(city.toLowerCase());
+    const cityLc = city.toLowerCase();
+    const location = cities.get(cityLc);
+    const cc = location.getCountryCode().toLowerCase();
     for (const a of aliases) {
-      cities.set(a.toLowerCase(), c);
+      const aliasLc = a.toLowerCase();
+      cities.set(aliasLc, location);
+      cities.set(`${cc}-${aliasLc}`, location);
     }
+    cities.set(`${cc}-${cityLc}`, location);
   }
   for (const [city, alias] of Object.entries(ccCityMap)) {
-    cities.set(alias.toLowerCase(), cities.get(city.toLowerCase()));
+    const cityLc = city.toLowerCase();
+    const location = cities.get(cityLc);
+    const cc = location.getCountryCode().toLowerCase();
+    cities.set(`${cc}-${cityLc}`, location);
+    const aliasLc = alias.toLowerCase();
+    cities.set(aliasLc, location);
+    cities.set(`${cc}-${aliasLc}`, location);
   }
 }
 

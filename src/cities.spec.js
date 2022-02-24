@@ -74,3 +74,8 @@ test('notfound', (t) => {
   const city = Location.lookup('**does not exist**');
   t.is(city, undefined);
 });
+
+test('alias-city-with-country', (t) => {
+  t.is(Location.lookup('IL-Petah Tikva').getName(), 'Petah Tiqwa');
+  t.is(Location.lookup('IL-Bene Beraq').getName(), 'Bene Beraq');
+});
