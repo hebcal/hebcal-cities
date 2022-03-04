@@ -79,3 +79,10 @@ test('alias-city-with-country', (t) => {
   t.is(Location.lookup('IL-Petah Tikva').getName(), 'Petah Tiqwa');
   t.is(Location.lookup('IL-Bene Beraq').getName(), 'Bene Beraq');
 });
+
+test('kyiv', (t) => {
+  t.is(Location.lookup('Kyiv').getName(), 'Kyiv');
+  t.is(Location.lookup('UA-Kiev').getName(), 'Kyiv');
+  t.is(Location.lookup('UA-Kyiv').getName(), 'Kyiv');
+  t.is(Location.lookup('Kiev').getName(), 'Kiev');
+});

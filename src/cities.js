@@ -74,6 +74,7 @@ function initCityAliases(cities) {
     'Panama': ['Panama City'],
     'Petah Tiqwa': ['Petach Tikvah', 'Petach Tikva', 'Petah Tikvah', 'Petah Tikva'],
     'Bene Beraq': ['Bnei Brak'],
+    'Kyiv': ['UA-Kyiv', 'UA-Kiev'],
   };
   const ccCityMap = {
     'Ashdod': 'IL-Ashdod',
@@ -100,7 +101,6 @@ function initCityAliases(cities) {
     'Houston': 'US-Houston-TX',
     'Jerusalem': 'IL-Jerusalem',
     'Johannesburg': 'ZA-Johannesburg',
-    'Kiev': 'UA-Kiev',
     'La Paz': 'BO-La Paz',
     'Livingston': 'US-Livingston-NY',
     'London': 'GB-London',
