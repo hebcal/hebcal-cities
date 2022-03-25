@@ -1,4 +1,4 @@
-import geoObject from './geo.json';
+import {countryNames, stateNames, cities} from './geo.json';
 import {Location} from '@hebcal/core';
 
 /**
@@ -39,12 +39,12 @@ function loadCities(locations) {
   for (const city of locations) {
     const cc = city.getCountryCode();
     if (cc == 'US') {
-      const stateLc = geoObject.stateNames[city.state].toLowerCase();
+      const stateLc = stateNames[city.state].toLowerCase();
       if (!cities.has(stateLc)) {
         cities.set(stateLc, city);
       }
     } else {
-      const countryLc = geoObject.countryNames[cc].toLowerCase();
+      const countryLc = countryNames[cc].toLowerCase();
       if (!cities.has(countryLc)) {
         cities.set(countryLc, city);
       }
@@ -154,7 +154,7 @@ function initCityAliases(cities) {
   }
 }
 
-const locations = parseGeoObject(geoObject.cities);
+const locations = parseGeoObject(cities);
 const cityMap = loadCities(locations);
 initCityAliases(cityMap);
 for (const [cityName, location] of cityMap.entries()) {
