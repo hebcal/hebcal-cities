@@ -14,14 +14,14 @@ module.exports = [
       {file: pkg.main, format: 'cjs', name: pkg.name, banner},
     ],
     plugins: [
-      json({compact: true}),
+      json({compact: true, preferConst: true}),
       babel({
         babelHelpers: 'bundled',
         presets: [
           ['@babel/preset-env', {
             modules: false,
             targets: {
-              node: '10.21.0',
+              node: '16.0.0',
             },
           }],
         ],
@@ -44,7 +44,7 @@ module.exports = [
           ['@babel/preset-env', {
             modules: false,
             targets: {
-              node: '12.22.0',
+              node: '16.0.0',
             },
           }],
         ],
@@ -77,17 +77,17 @@ module.exports = [
       },
     ],
     plugins: [
-      json({compact: true}),
+      json({compact: true, preferConst: true}),
       babel({
         babelHelpers: 'bundled',
         presets: [
           ['@babel/preset-env', {
             modules: false,
             targets: {
-              edge: '17',
-              firefox: '60',
-              chrome: '67',
-              safari: '11.1',
+              chrome: '103',
+              firefox: '91',
+              edge: '84',
+              safari: '15.6',
             },
             useBuiltIns: 'usage',
             corejs: 3,
