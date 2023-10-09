@@ -2,23 +2,27 @@ import {countryNames, stateNames, cities} from './geo.json';
 import {Location} from '@hebcal/core';
 
 /**
- * @param {Object[]} raw
- * @return {Location[]}
+ * @private
+ * @param {string} str
+ * @return {Location}
  */
-function parseGeoObject(raw) {
-  return raw.map((f) => {
-    const cityName = f[0];
-    const country = f[1];
-    const admin1 = f[2];
-    const latitude = +f[3];
-    const longitude = +f[4];
-    const tzid = f[5];
-    const geoid = f[6] ? +f[6] : undefined;
-    const city = new Location(latitude, longitude, country == 'IL',
-        tzid, cityName, country, geoid);
-    if (country == 'US') city.state = admin1;
-    return city;
-  });
+function parseCityString(str) {
+  const f = str.split('|');
+  const cityName = f[0];
+  const country = f[1];
+  const admin1 = f[2];
+  const latitude = +f[3];
+  const longitude = +f[4];
+  const tzid = f[5];
+
+  const city = new Location(latitude, longitude, country == 'IL',
+      tzid, cityName, country);
+  if (country == 'US') {
+    city.state = admin1;
+  } else if (admin1) {
+    city.admin1 = admin1;
+  }
+  return city;
 }
 
 /**
@@ -74,7 +78,7 @@ function initCityAliases(cities) {
     'Panama': ['Panama City'],
     'Petah Tiqwa': ['Petach Tikvah', 'Petach Tikva', 'Petah Tikvah', 'Petah Tikva'],
     'Bene Beraq': ['Bnei Brak'],
-    'Kyiv': ['UA-Kyiv', 'UA-Kiev'],
+    'Kyiv': ['Kiev', 'UA-Kyiv', 'UA-Kiev'],
   };
   const ccCityMap = {
     'Ashdod': 'IL-Ashdod',
@@ -154,7 +158,7 @@ function initCityAliases(cities) {
   }
 }
 
-const locations = parseGeoObject(cities);
+const locations = cities.map(parseCityString);
 const cityMap = loadCities(locations);
 initCityAliases(cityMap);
 for (const [cityName, location] of cityMap.entries()) {
