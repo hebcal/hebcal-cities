@@ -4,28 +4,28 @@ import './cities';
 
 test('lookup', (t) => {
   let city = Location.lookup('Rishon LeZiyyon');
-  t.is(city.latitude, 31.97102);
-  t.is(city.longitude, 34.78939);
-  t.is(city.tzid, 'Asia/Jerusalem');
-  t.is(city.cc, 'IL');
+  t.is(city.getLatitude(), 31.97102);
+  t.is(city.getLongitude(), 34.78939);
+  t.is(city.getTzid(), 'Asia/Jerusalem');
+  t.is(city.getCountryCode(), 'IL');
 
   city = Location.lookup('El Paso');
-  t.is(city.latitude, 31.75872);
-  t.is(city.longitude, -106.48693);
-  t.is(city.tzid, 'America/Denver');
-  t.is(city.cc, 'US');
+  t.is(city.getLatitude(), 31.75872);
+  t.is(city.getLongitude(), -106.48693);
+  t.is(city.getTzid(), 'America/Denver');
+  t.is(city.getCountryCode(), 'US');
 
   city = Location.lookup('Zurich');
-  t.is(city.latitude, 47.36667);
-  t.is(city.longitude, 8.55);
-  t.is(city.tzid, 'Europe/Zurich');
-  t.is(city.cc, 'CH');
+  t.is(city.getLatitude(), 47.36667);
+  t.is(city.getLongitude(), 8.55);
+  t.is(city.getTzid(), 'Europe/Zurich');
+  t.is(city.getCountryCode(), 'CH');
 
   city = Location.lookup('Dublin');
-  t.is(city.latitude, 53.33306);
-  t.is(city.longitude, -6.24889);
-  t.is(city.tzid, 'Europe/Dublin');
-  t.is(city.cc, 'IE');
+  t.is(city.getLatitude(), 53.33306);
+  t.is(city.getLongitude(), -6.24889);
+  t.is(city.getTzid(), 'Europe/Dublin');
+  t.is(city.getCountryCode(), 'IE');
 });
 
 test('alias-cc-cityName', (t) => {
