@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/hebcal/hebcal-cities#readme",
   "dependencies": {
-    "@hebcal/core": "^5.0.0-rc1"
+    "@hebcal/core": "^5.0.0-rc6"
   },
   "scripts": {
     "build": "rollup -c",
@@ -53,6 +53,6 @@
     "core-js": "^3.33.3",
     "eslint": "^8.54.0",
     "eslint-config-google": "^0.14.0",
-    "rollup": "^4.5.1"
+    "rollup": "^4.6.0"
   }
 }
