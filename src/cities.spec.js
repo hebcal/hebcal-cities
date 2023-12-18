@@ -1,6 +1,6 @@
 import test from 'ava';
 import {Location} from '@hebcal/core';
-import './cities';
+import './cities.js';
 
 test('lookup', (t) => {
   let city = Location.lookup('Rishon LeZiyyon');

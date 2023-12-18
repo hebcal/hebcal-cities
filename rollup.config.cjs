@@ -1,6 +1,5 @@
 const {nodeResolve} = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
-const babel = require('@rollup/plugin-babel');
 const json = require('@rollup/plugin-json');
 const terser = require('@rollup/plugin-terser');
 const pkg = require('./package.json');
@@ -15,18 +14,6 @@ module.exports = [
     ],
     plugins: [
       json({compact: true, preferConst: true}),
-      babel({
-        babelHelpers: 'bundled',
-        presets: [
-          ['@babel/preset-env', {
-            modules: false,
-            targets: {
-              node: '16.0.0',
-            },
-          }],
-        ],
-        exclude: ['node_modules/**'],
-      }),
       nodeResolve(),
     ],
     external: ['@hebcal/core'],
@@ -38,18 +25,6 @@ module.exports = [
     ],
     plugins: [
       json({compact: true, preferConst: true}),
-      babel({
-        babelHelpers: 'bundled',
-        presets: [
-          ['@babel/preset-env', {
-            modules: false,
-            targets: {
-              node: '16.0.0',
-            },
-          }],
-        ],
-        exclude: ['node_modules/**'],
-      }),
       nodeResolve(),
     ],
     external: ['@hebcal/core'],
@@ -78,23 +53,6 @@ module.exports = [
     ],
     plugins: [
       json({compact: true, preferConst: true}),
-      babel({
-        babelHelpers: 'bundled',
-        presets: [
-          ['@babel/preset-env', {
-            modules: false,
-            targets: {
-              chrome: '103',
-              firefox: '91',
-              edge: '84',
-              safari: '15.6',
-            },
-            useBuiltIns: 'usage',
-            corejs: 3,
-          }],
-        ],
-        exclude: ['node_modules/**'],
-      }),
       nodeResolve(),
       commonjs(),
     ],

@@ -1,16 +1,19 @@
 {
   "name": "@hebcal/cities",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Hebcal city database for candle-lighting times",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "module": "dist/index.mjs",
+  "type": "module",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
   "engines": {
     "node": ">=16.0.0"
   },
-  "typings": "cities.d.ts",
   "files": [
-    "dist",
-    "cities.d.ts"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -23,36 +26,24 @@
   },
   "homepage": "https://github.com/hebcal/hebcal-cities#readme",
   "dependencies": {
-    "@hebcal/core": "^5.0.1"
+    "@hebcal/core": "^5.0.3"
   },
   "scripts": {
-    "build": "rollup -c",
+    "build:rollup": "rollup -c",
+    "build:json2js": "echo 'export default' > src/geo.js && cat src/geo.json >> src/geo.js",
+    "build": "npm run build:json2js && npm run build:rollup",
     "prepublish": "npm run build",
     "test": "ava"
   },
-  "ava": {
-    "files": [
-      "src/**/*.spec.js"
-    ],
-    "require": [
-      "@babel/register"
-    ],
-    "inherit": true,
-    "verbose": true
-  },
   "devDependencies": {
-    "@babel/core": "^7.23.5",
-    "@babel/preset-env": "^7.23.5",
-    "@babel/register": "^7.22.15",
-    "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "ava": "^6.0.1",
     "core-js": "^3.34.0",
-    "eslint": "^8.55.0",
+    "eslint": "^8.56.0",
     "eslint-config-google": "^0.14.0",
-    "rollup": "^4.7.0"
+    "rollup": "^4.9.1"
   }
 }

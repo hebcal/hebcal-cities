@@ -1,5 +1,7 @@
-import {countryNames, stateNames, cities} from './geo.json';
+import geoConfig from './geo.js';
 import {Location} from '@hebcal/core';
+
+const {countryNames, stateNames, cities} = geoConfig;
 
 /**
  * @private
