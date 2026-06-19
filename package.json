@@ -31,7 +31,7 @@
     "build:json2js": "echo 'export default' > src/geo.js && cat src/geo.json >> src/geo.js",
     "build": "npm run build:json2js && npm run build:rollup",
     "prepublish": "npm run build",
-    "test": "node --test src/cities.spec.js"
+    "test": "node --test test/cities.spec.js"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",
