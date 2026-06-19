@@ -24,20 +24,19 @@
   },
   "homepage": "https://github.com/hebcal/hebcal-cities#readme",
   "dependencies": {
-    "@hebcal/core": "^6.5.0"
+    "@hebcal/core": "^6.6.0"
   },
   "scripts": {
     "build:rollup": "rollup -c",
     "build:json2js": "echo 'export default' > src/geo.js && cat src/geo.json >> src/geo.js",
     "build": "npm run build:json2js && npm run build:rollup",
     "prepublish": "npm run build",
-    "test": "ava"
+    "test": "node --test src/cities.spec.js"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.0",
-    "ava": "^8.0.0",
-    "rollup": "^4.60.3"
+    "rollup": "^4.62.2"
   }
 }

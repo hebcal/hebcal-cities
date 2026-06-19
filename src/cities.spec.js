@@ -1,34 +1,35 @@
-import test from 'ava';
+import {test} from 'node:test';
+import assert from 'node:assert';
 import {Location} from '@hebcal/core';
 import './cities.js';
 
-test('lookup', (t) => {
+test('lookup', () => {
   let city = Location.lookup('Rishon LeZiyyon');
-  t.is(city.getLatitude(), 31.97102);
-  t.is(city.getLongitude(), 34.78939);
-  t.is(city.getTzid(), 'Asia/Jerusalem');
-  t.is(city.getCountryCode(), 'IL');
+  assert.strictEqual(city.getLatitude(), 31.97102);
+  assert.strictEqual(city.getLongitude(), 34.78939);
+  assert.strictEqual(city.getTzid(), 'Asia/Jerusalem');
+  assert.strictEqual(city.getCountryCode(), 'IL');
 
   city = Location.lookup('El Paso');
-  t.is(city.getLatitude(), 31.75872);
-  t.is(city.getLongitude(), -106.48693);
-  t.is(city.getTzid(), 'America/Denver');
-  t.is(city.getCountryCode(), 'US');
+  assert.strictEqual(city.getLatitude(), 31.75872);
+  assert.strictEqual(city.getLongitude(), -106.48693);
+  assert.strictEqual(city.getTzid(), 'America/Denver');
+  assert.strictEqual(city.getCountryCode(), 'US');
 
   city = Location.lookup('Zurich');
-  t.is(city.getLatitude(), 47.36667);
-  t.is(city.getLongitude(), 8.55);
-  t.is(city.getTzid(), 'Europe/Zurich');
-  t.is(city.getCountryCode(), 'CH');
+  assert.strictEqual(city.getLatitude(), 47.36667);
+  assert.strictEqual(city.getLongitude(), 8.55);
+  assert.strictEqual(city.getTzid(), 'Europe/Zurich');
+  assert.strictEqual(city.getCountryCode(), 'CH');
 
   city = Location.lookup('Dublin');
-  t.is(city.getLatitude(), 53.33306);
-  t.is(city.getLongitude(), -6.24889);
-  t.is(city.getTzid(), 'Europe/Dublin');
-  t.is(city.getCountryCode(), 'IE');
+  assert.strictEqual(city.getLatitude(), 53.33306);
+  assert.strictEqual(city.getLongitude(), -6.24889);
+  assert.strictEqual(city.getTzid(), 'Europe/Dublin');
+  assert.strictEqual(city.getCountryCode(), 'IE');
 });
 
-test('alias-cc-cityName', (t) => {
+test('alias-cc-cityName', () => {
   const classic = [
     'IL-Ashdod', 'US-Atlanta-GA', 'US-Austin-TX', 'IQ-Baghdad', 'IL-Beer Sheva',
     'DE-Berlin', 'US-Baltimore-MD', 'CO-Bogota', 'US-Boston-MA', 'AR-Buenos Aires',
@@ -45,44 +46,44 @@ test('alias-cc-cityName', (t) => {
   ];
   for (const s of classic) {
     const city = Location.lookup(s);
-    t.is(typeof city, 'object', s);
+    assert.strictEqual(typeof city, 'object', s);
   }
 });
 
-test('alias-cc', (t) => {
-  t.is(Location.lookup('France').getName(), 'Paris');
-  t.is(Location.lookup('Russia').getName(), 'Moscow');
-  t.is(Location.lookup('United Kingdom').getName(), 'London');
-  t.is(Location.lookup('Brazil').getName(), 'Sao Paulo');
-  t.is(Location.lookup('Mexico').getName(), 'Mexico City');
-  t.is(Location.lookup('Argentina').getName(), 'Buenos Aires');
-  t.is(Location.lookup('Greece').getName(), 'Athens');
+test('alias-cc', () => {
+  assert.strictEqual(Location.lookup('France').getName(), 'Paris');
+  assert.strictEqual(Location.lookup('Russia').getName(), 'Moscow');
+  assert.strictEqual(Location.lookup('United Kingdom').getName(), 'London');
+  assert.strictEqual(Location.lookup('Brazil').getName(), 'Sao Paulo');
+  assert.strictEqual(Location.lookup('Mexico').getName(), 'Mexico City');
+  assert.strictEqual(Location.lookup('Argentina').getName(), 'Buenos Aires');
+  assert.strictEqual(Location.lookup('Greece').getName(), 'Athens');
 });
 
-test('alias-city', (t) => {
-  t.is(Location.lookup('NYC').getName(), 'New York');
-  t.is(Location.lookup('Vegas').getName(), 'Las Vegas');
-  t.is(Location.lookup('Scotland').getName(), 'Glasgow');
+test('alias-city', () => {
+  assert.strictEqual(Location.lookup('NYC').getName(), 'New York');
+  assert.strictEqual(Location.lookup('Vegas').getName(), 'Las Vegas');
+  assert.strictEqual(Location.lookup('Scotland').getName(), 'Glasgow');
 });
 
-test('alias-us-state', (t) => {
-  t.is(Location.lookup('California').getName(), 'Los Angeles');
-  t.is(Location.lookup('Massachusetts').getName(), 'Boston');
+test('alias-us-state', () => {
+  assert.strictEqual(Location.lookup('California').getName(), 'Los Angeles');
+  assert.strictEqual(Location.lookup('Massachusetts').getName(), 'Boston');
 });
 
-test('notfound', (t) => {
+test('notfound', () => {
   const city = Location.lookup('**does not exist**');
-  t.is(city, undefined);
+  assert.strictEqual(city, undefined);
 });
 
-test('alias-city-with-country', (t) => {
-  t.is(Location.lookup('IL-Petah Tikva').getName(), 'Petah Tiqwa');
-  t.is(Location.lookup('IL-Bene Beraq').getName(), 'Bene Beraq');
+test('alias-city-with-country', () => {
+  assert.strictEqual(Location.lookup('IL-Petah Tikva').getName(), 'Petah Tiqwa');
+  assert.strictEqual(Location.lookup('IL-Bene Beraq').getName(), 'Bene Beraq');
 });
 
-test('kyiv', (t) => {
-  t.is(Location.lookup('Kyiv').getName(), 'Kyiv');
-  t.is(Location.lookup('UA-Kiev').getName(), 'Kyiv');
-  t.is(Location.lookup('UA-Kyiv').getName(), 'Kyiv');
-  t.is(Location.lookup('Kiev').getName(), 'Kiev');
+test('kyiv', () => {
+  assert.strictEqual(Location.lookup('Kyiv').getName(), 'Kyiv');
+  assert.strictEqual(Location.lookup('UA-Kiev').getName(), 'Kyiv');
+  assert.strictEqual(Location.lookup('UA-Kyiv').getName(), 'Kyiv');
+  assert.strictEqual(Location.lookup('Kiev').getName(), 'Kyiv');
 });
