@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert';
 import {Location} from '@hebcal/core';
-import './cities.js';
+import '../src/cities.js';
 
 test('lookup', () => {
   let city = Location.lookup('Rishon LeZiyyon');
