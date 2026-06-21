@@ -23,6 +23,8 @@ module.exports = [
       {
         file: 'dist/bundle.js',
         format: 'iife',
+        name: 'hebcal.cities',
+        extend: true,
         globals: {
           '@hebcal/core': 'hebcal',
         },
@@ -32,6 +34,8 @@ module.exports = [
       {
         file: 'dist/bundle.min.js',
         format: 'iife',
+        name: 'hebcal.cities',
+        extend: true,
         globals: {
           '@hebcal/core': 'hebcal',
         },

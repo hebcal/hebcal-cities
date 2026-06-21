@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert';
 import {Location} from '@hebcal/core';
-import '../src/cities.js';
+import {countryNames, stateNames} from '../src/cities.js';
 
 test('lookup', () => {
   let city = Location.lookup('Rishon LeZiyyon');
@@ -86,4 +86,12 @@ test('kyiv', () => {
   assert.strictEqual(Location.lookup('UA-Kiev').getName(), 'Kyiv');
   assert.strictEqual(Location.lookup('UA-Kyiv').getName(), 'Kyiv');
   assert.strictEqual(Location.lookup('Kiev').getName(), 'Kyiv');
+});
+
+test('stateNames', () => {
+  assert.strictEqual(stateNames.CA, 'California');
+});
+
+test('countryNames', () => {
+  assert.strictEqual(countryNames.AD, 'Andorra');
 });

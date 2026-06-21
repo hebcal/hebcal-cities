@@ -3,6 +3,8 @@ import {Location} from '@hebcal/core';
 
 const {countryNames, stateNames, cities} = geoConfig;
 
+export {countryNames, stateNames};
+
 /**
  * @private
  * @param {string} str

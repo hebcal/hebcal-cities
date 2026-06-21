@@ -1,11 +1,15 @@
 {
   "name": "@hebcal/cities",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "Hebcal city database for candle-lighting times",
   "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
   "engines": {
     "node": ">=18.0.0"
@@ -29,7 +33,8 @@
   "scripts": {
     "build:rollup": "rollup -c",
     "build:json2js": "echo 'export default' > src/geo.js && cat src/geo.json >> src/geo.js",
-    "build": "npm run build:json2js && npm run build:rollup",
+    "build:types": "cp src/index.d.ts dist/index.d.ts",
+    "build": "npm run build:json2js && npm run build:rollup && npm run build:types",
     "prepublish": "npm run build",
     "test": "node --test test/cities.spec.js"
   },
