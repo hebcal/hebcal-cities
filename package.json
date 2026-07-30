@@ -1,6 +1,6 @@
 {
   "name": "@hebcal/cities",
-  "version": "6.2.0",
+  "version": "6.2.1",
   "description": "Hebcal city database for candle-lighting times",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
