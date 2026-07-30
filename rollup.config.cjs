@@ -1,5 +1,3 @@
-const {nodeResolve} = require('@rollup/plugin-node-resolve');
-const json = require('@rollup/plugin-json');
 const terser = require('@rollup/plugin-terser');
 const pkg = require('./package.json');
 
@@ -10,10 +8,6 @@ module.exports = [
     input: 'src/cities.js',
     output: [
       {file: pkg.module, format: 'es', name: pkg.name, banner},
-    ],
-    plugins: [
-      json({compact: true, preferConst: true}),
-      nodeResolve(),
     ],
     external: ['@hebcal/core'],
   },
@@ -42,10 +36,6 @@ module.exports = [
         plugins: [terser()],
         banner,
       },
-    ],
-    plugins: [
-      json({compact: true, preferConst: true}),
-      nodeResolve(),
     ],
     external: ['@hebcal/core'],
   },

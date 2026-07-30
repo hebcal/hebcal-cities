@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/hebcal/hebcal-cities#readme",
   "dependencies": {
-    "@hebcal/core": "^6.6.0"
+    "@hebcal/core": "^6.9.1"
   },
   "scripts": {
     "build:rollup": "rollup -c",
@@ -39,9 +39,7 @@
     "test": "node --test test/cities.spec.js"
   },
   "devDependencies": {
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.0",
-    "rollup": "^4.62.2"
+    "rollup": "^4.62.3"
   }
 }
