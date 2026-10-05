@@ -1,6 +1,6 @@
 {
   "name": "@hebcal/cities",
-  "version": "6.2.1",
+  "version": "6.2.2",
   "description": "Hebcal city database for candle-lighting times",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/hebcal/hebcal-cities#readme",
   "dependencies": {
-    "@hebcal/core": "^6.9.1"
+    "@hebcal/core": "^6.13.0"
   },
   "scripts": {
     "build:rollup": "rollup -c",
@@ -40,6 +40,6 @@
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^1.0.0",
-    "rollup": "^4.62.3"
+    "rollup": "^4.64.0"
   }
 }
