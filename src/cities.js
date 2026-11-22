@@ -19,9 +19,9 @@ function parseCityString(str) {
   const longitude = +f[4];
   const tzid = f[5];
 
-  const city = new Location(latitude, longitude, country == 'IL',
+  const city = new Location(latitude, longitude, country === 'IL',
       tzid, cityName, country);
-  if (country == 'US') {
+  if (country === 'US') {
     city.state = admin1;
   } else if (admin1) {
     city.admin1 = admin1;
@@ -37,16 +37,15 @@ function loadCities(locations) {
   const cities = new Map();
   for (const city of locations) {
     const cityLc = city.getName().toLowerCase();
-    cities.set(cityLc, city);
-    const shortName = cityLc.substring(0, cityLc.indexOf(','));
-    if (!cities.has(shortName)) {
-      cities.set(shortName, city);
+    // when a name appears more than once, the earliest row wins
+    if (!cities.has(cityLc)) {
+      cities.set(cityLc, city);
     }
   }
   // this is silly, but alias the first occurrence of each country
   for (const city of locations) {
     const cc = city.getCountryCode();
-    if (cc == 'US') {
+    if (cc === 'US') {
       const stateLc = stateNames[city.state].toLowerCase();
       if (!cities.has(stateLc)) {
         cities.set(stateLc, city);
@@ -63,26 +62,34 @@ function loadCities(locations) {
 
 /**
  * @param {Map<string,Location>} cities
+ * @param {Map<string,Location>} byCcName first location for each `cc-name` key
  */
-function initCityAliases(cities) {
+function initCityAliases(cities, byCcName) {
   const aliasMap = {
-    // geo.json name: [ alias1, alias2, alias3 ...]
-    'new york': ['nyc', 'n y c', 'new york city', 'new york new york'],
-    'beer sheva': ['beersheba', 'beer sheba'],
-    'the bronx': ['bronx', 'bronx new york'],
-    'los angeles': ['la', 'l a'],
-    'washington': ['dc', 'd c', 'washington dc', 'washington d c'],
-    'london': ['england', 'great britain', 'britain'],
-    'glasgow': ['scotland'],
-    'belfast': ['northern ireland'],
-    'cardiff': ['wales'],
-    'south lake tahoe': ['lake tahoe', 'tahoe'],
-    'las vegas': ['vegas'],
-    'Marseille': ['Marseilles'],
-    'Panama': ['Panama City'],
-    'Petah Tiqwa': ['Petach Tikvah', 'Petach Tikva', 'Petah Tikvah', 'Petah Tikva'],
-    'Bene Beraq': ['Bnei Brak'],
-    'Kyiv': ['Kiev', 'UA-Kyiv', 'UA-Kiev'],
+    // CC-geo.json name: [ alias1, alias2, alias3 ...]
+    // country/state names whose first row in geo.json isn't the right city
+    'US-Newark': ['New Jersey'],
+    'AR-Buenos Aires': ['Argentina'],
+    'RU-Moscow': ['Russia'],
+    'EG-Cairo': ['Egypt'],
+    'VE-Caracas': ['Venezuela'],
+    // cities
+    'US-New York': ['nyc', 'n y c', 'new york city', 'new york new york'],
+    'IL-Beer Sheva': ['beersheba', 'beer sheba'],
+    'US-The Bronx': ['bronx', 'bronx new york'],
+    'US-Los Angeles': ['la', 'l a'],
+    'US-Washington': ['dc', 'd c', 'washington dc', 'washington d c'],
+    'GB-London': ['england', 'great britain', 'britain', 'united kingdom'],
+    'GB-Glasgow': ['scotland'],
+    'GB-Belfast': ['northern ireland'],
+    'GB-Cardiff': ['wales'],
+    'US-South Lake Tahoe': ['lake tahoe', 'tahoe'],
+    'US-Las Vegas': ['vegas'],
+    'FR-Marseille': ['Marseilles'],
+    'PA-Panama': ['Panama City'],
+    'IL-Petah Tiqwa': ['Petach Tikvah', 'Petach Tikva', 'Petah Tikvah', 'Petah Tikva'],
+    'IL-Bene Beraq': ['Bnei Brak'],
+    'UA-Kyiv': ['Kiev'],
   };
   const ccCityMap = {
     'Ashdod': 'IL-Ashdod',
@@ -140,31 +147,49 @@ function initCityAliases(cities) {
     'Washington DC': 'US-Washington-DC',
     'Bene Beraq': 'IL-Bnei Brak',
   };
-  for (const [city, aliases] of Object.entries(aliasMap)) {
-    const cityLc = city.toLowerCase();
-    const location = cities.get(cityLc);
-    const cc = location.getCountryCode().toLowerCase();
+  for (const [key, aliases] of Object.entries(aliasMap)) {
+    const keyLc = key.toLowerCase();
+    const cc = keyLc.substring(0, 2);
+    const cityLc = keyLc.substring(3);
+    const location = byCcName.get(keyLc);
+    if (!location) {
+      throw new Error(`@hebcal/cities: alias target ${key} not found`);
+    }
+    // When a name exists in several countries, the alias table decides
+    cities.set(cityLc, location);
+    cities.set(keyLc, location);
     for (const a of aliases) {
       const aliasLc = a.toLowerCase();
       cities.set(aliasLc, location);
       cities.set(`${cc}-${aliasLc}`, location);
     }
-    cities.set(`${cc}-${cityLc}`, location);
   }
   for (const [city, alias] of Object.entries(ccCityMap)) {
     const cityLc = city.toLowerCase();
-    const location = cities.get(cityLc);
-    const cc = location.getCountryCode().toLowerCase();
-    cities.set(`${cc}-${cityLc}`, location);
     const aliasLc = alias.toLowerCase();
+    const cc = aliasLc.substring(0, 2);
+    const ccCityLc = `${cc}-${cityLc}`;
+    // city may itself be an alias (e.g. 'Petach Tikvah', 'Hawaii')
+    const location = byCcName.get(ccCityLc) || cities.get(ccCityLc) ||
+      cities.get(cityLc);
+    if (!location || location.getCountryCode().toLowerCase() !== cc) {
+      throw new Error(`@hebcal/cities: ${alias} does not resolve to ${city}`);
+    }
+    cities.set(ccCityLc, location);
     cities.set(aliasLc, location);
-    cities.set(`${cc}-${aliasLc}`, location);
   }
 }
 
 const locations = cities.map(parseCityString);
+const byCcName = new Map();
+for (const location of locations) {
+  const key = `${location.getCountryCode()}-${location.getName()}`.toLowerCase();
+  if (!byCcName.has(key)) {
+    byCcName.set(key, location);
+  }
+}
 const cityMap = loadCities(locations);
-initCityAliases(cityMap);
+initCityAliases(cityMap, byCcName);
 for (const [cityName, location] of cityMap.entries()) {
   Location.addLocation(cityName, location);
 }

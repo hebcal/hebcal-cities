@@ -95,3 +95,43 @@ test('stateNames', () => {
 test('countryNames', () => {
   assert.strictEqual(countryNames.AD, 'Andorra');
 });
+
+test('london-is-england', () => {
+  for (const s of ['London', 'GB-London', 'England', 'Great Britain', 'Britain']) {
+    const city = Location.lookup(s);
+    assert.strictEqual(city.getCountryCode(), 'GB', s);
+    assert.strictEqual(city.getName(), 'London', s);
+  }
+});
+
+test('cc-alias-matches-country', () => {
+  for (const s of ['US-Atlanta-GA', 'IL-Bnei Brak', 'UA-Kiev', 'PA-Panama City', 'US-Washington-DC']) {
+    const cc = s.substring(0, 2);
+    assert.strictEqual(Location.lookup(s).getCountryCode(), cc, s);
+  }
+});
+
+test('empty-string', () => {
+  assert.strictEqual(Location.lookup(''), undefined);
+});
+
+test('earliest-row-wins', () => {
+  const expected = {
+    'Athens': 'GR', 'Saint Petersburg': 'RU', 'Birmingham': 'GB',
+    'Alexandria': 'EG', 'Valencia': 'VE', 'Santa Fe': 'AR',
+    'Portsmouth': 'GB', 'Lakewood': 'US', 'San Jose': 'US',
+    'Plymouth': 'GB', 'Hamilton': 'CA', 'San Juan': 'PR',
+  };
+  for (const [name, cc] of Object.entries(expected)) {
+    assert.strictEqual(Location.lookup(name).getCountryCode(), cc, name);
+  }
+  assert.strictEqual(Location.lookup('Lakewood').state, 'NJ');
+  assert.strictEqual(Location.lookup('Columbus').state, 'OH');
+  assert.strictEqual(Location.lookup('Kansas City').state, 'MO');
+});
+
+test('country-and-state-aliases', () => {
+  assert.strictEqual(Location.lookup('New Jersey').getName(), 'Newark');
+  assert.strictEqual(Location.lookup('Egypt').getName(), 'Cairo');
+  assert.strictEqual(Location.lookup('Venezuela').getName(), 'Caracas');
+});

@@ -1,6 +1,6 @@
 {
   "name": "@hebcal/cities",
-  "version": "6.2.2",
+  "version": "7.0.0",
   "description": "Hebcal city database for candle-lighting times",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,7 +12,7 @@
     }
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
   },
   "files": [
     "dist"
@@ -28,18 +28,15 @@
   },
   "homepage": "https://github.com/hebcal/hebcal-cities#readme",
   "dependencies": {
-    "@hebcal/core": "^6.13.0"
+    "@hebcal/core": "^6.16.1"
   },
   "scripts": {
-    "build:rollup": "rollup -c",
     "build:json2js": "echo 'export default' > src/geo.js && cat src/geo.json >> src/geo.js",
+    "build:copy": "rm -rf dist && mkdir -p dist && cp src/cities.js dist/index.js && cp src/geo.js dist/geo.js",
     "build:types": "cp src/index.d.ts dist/index.d.ts",
-    "build": "npm run build:json2js && npm run build:rollup && npm run build:types",
-    "prepublish": "npm run build",
+    "build": "npm run build:json2js && npm run build:copy && npm run build:types",
+    "prepack": "npm run build",
+    "pretest": "npm run build:json2js",
     "test": "node --test test/cities.spec.js"
-  },
-  "devDependencies": {
-    "@rollup/plugin-terser": "^1.0.0",
-    "rollup": "^4.64.0"
   }
 }

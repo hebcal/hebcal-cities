@@ -1,6 +1,6 @@
 # @hebcal/cities
 Hebcal city database for candle-lighting times.
-Includes about 700 world cities.
+Includes about 950 world cities.
 
 ## Installation
 ```bash
